@@ -1,0 +1,22 @@
+version: "3.7"
+
+networks:
+  named:
+    external: false
+  nginx_nginx_network:
+    external: true
+
+services:
+  named:
+    container_name: named-dns
+    image: bind9
+    environment:
+      - NET_GATEWAY=10.0.0.254
+      - DNS_IP=10.0.0.200
+      - ZONE=testing.local
+    restart: unless-stopped
+    networks:
+      - named
+      - nginx_nginx_network
+    volumes:
+      - /opt/named:/var/named
